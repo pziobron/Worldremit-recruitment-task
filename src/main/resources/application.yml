@@ -1,0 +1,25 @@
+management:
+  server:
+    port: 9000
+  endpoint:
+    metrics:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "health,info,metrics"
+
+credit-card-vendor-specs:
+  -
+    type: MasterCard
+    minNumberOfDigits: 16
+    maxNumberOfDigits: 16
+    startFromRanges:
+      - 2221-2720
+      - 51-55
+  -
+    type: Visa
+    minNumberOfDigits: 13
+    maxNumberOfDigits: 16
+    startFromRanges:
+      - 4
