@@ -9,7 +9,7 @@ management:
       exposure:
         include: "health,info,metrics"
 
-creditCardVendorSpecs:
+credit-card-vendor-specs:
   -
     type: MasterCard
     minNumberOfDigits: 16

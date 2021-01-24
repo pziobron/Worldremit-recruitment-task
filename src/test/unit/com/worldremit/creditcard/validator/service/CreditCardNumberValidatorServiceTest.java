@@ -1,7 +1,7 @@
 package com.worldremit.creditcard.validator.service;
 
 import com.google.common.collect.ImmutableList;
-import com.worldremit.creditcard.config.GeneralConfig;
+import com.worldremit.creditcard.config.CreditCardValidators;
 import com.worldremit.creditcard.validator.CreditCardNumberTestBase;
 import com.worldremit.creditcard.validator.common.CreditCardLuhnAlgorithmValidator;
 import com.worldremit.creditcard.validator.vendor.CreditCardMaskVendorValidator;
@@ -34,7 +34,7 @@ public class CreditCardNumberValidatorServiceTest extends CreditCardNumberTestBa
     private List<String> invalidNumbers;
 
     @Mock
-    private GeneralConfig generalConfig;
+    private CreditCardValidators creditCardValidators;
 
     @InjectMocks
     private CreditCardNumberValidatorService objectUnderTest;
@@ -49,13 +49,13 @@ public class CreditCardNumberValidatorServiceTest extends CreditCardNumberTestBa
     public void setUp() {
         objectUnderTest = new CreditCardNumberValidatorService();
         MockitoAnnotations.initMocks(this);
-        when(generalConfig.getCreditCardNumberCommonValidators()).thenReturn(ImmutableList.of(new CreditCardLuhnAlgorithmValidator()));
+        when(creditCardValidators.getCommonValidators()).thenReturn(ImmutableList.of(new CreditCardLuhnAlgorithmValidator()));
         ImmutableList.Builder<CreditCardNumberVendorValidator> builder = new ImmutableList.Builder<>();
         for (CreditCardVendorSpec vendorSpec : creditCardVendorSpecMap.values()) {
             builder.add(new CreditCardNumberLengthVendorValidator(vendorSpec));
             builder.add(new CreditCardMaskVendorValidator(vendorSpec));
         }
-        when(generalConfig.getCreditCardNumberVendorValidators()).thenReturn(builder.build());
+        when(creditCardValidators.getVendorSpecificValidators()).thenReturn(builder.build());
     }
 
     @Test

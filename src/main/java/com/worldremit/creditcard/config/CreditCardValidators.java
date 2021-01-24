@@ -8,7 +8,6 @@ import com.worldremit.creditcard.validator.vendor.CreditCardNumberLengthVendorVa
 import com.worldremit.creditcard.validator.vendor.CreditCardNumberVendorValidator;
 import com.worldremit.creditcard.validator.vendor.CreditCardVendorSpec;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
@@ -17,9 +16,8 @@ import java.util.Collections;
 import java.util.List;
 
 @Configuration
-@EnableConfigurationProperties
-@ConfigurationProperties
-public class GeneralConfig {
+@ConfigurationProperties(prefix = "credit-card-vendor-specs")
+public class CreditCardValidators {
 
     private List<CreditCardVendorSpec> creditCardVendorSpecs = new ArrayList<>();
 
@@ -27,15 +25,11 @@ public class GeneralConfig {
 
     private List<CreditCardNumberValidator> creditCardNumberCommonValidators = Collections.emptyList();
 
-    public List<CreditCardVendorSpec> getCreditCardVendorSpecs() {
-        return creditCardVendorSpecs;
-    }
-
-    public List<CreditCardNumberValidator> getCreditCardNumberCommonValidators() {
+    public List<CreditCardNumberValidator> getCommonValidators() {
         return creditCardNumberCommonValidators;
     }
 
-    public List<CreditCardNumberVendorValidator> getCreditCardNumberVendorValidators() {
+    public List<CreditCardNumberVendorValidator> getVendorSpecificValidators() {
         return creditCardNumberVendorValidators;
     }
 

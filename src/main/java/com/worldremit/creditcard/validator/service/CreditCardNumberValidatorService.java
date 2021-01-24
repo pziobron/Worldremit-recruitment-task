@@ -1,7 +1,7 @@
 package com.worldremit.creditcard.validator.service;
 
 import com.google.common.base.Preconditions;
-import com.worldremit.creditcard.config.GeneralConfig;
+import com.worldremit.creditcard.config.CreditCardValidators;
 import com.worldremit.creditcard.validator.service.exception.InvalidNumberException;
 import com.worldremit.creditcard.validator.utils.ValidatorUtils;
 import com.worldremit.creditcard.validator.vendor.CreditCardVendorType;
@@ -17,7 +17,7 @@ public class CreditCardNumberValidatorService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(CreditCardNumberValidatorService.class);
 
 	@Autowired
-	private GeneralConfig generalConfig;
+	private CreditCardValidators creditCardValidators;
 
 	@Timed(value = "ccNumberValidatorServiceCallTimes")
 	public boolean validate(CreditCardVendorType vendorType, String number) {
@@ -30,11 +30,11 @@ public class CreditCardNumberValidatorService {
 		}
 
 		//Validation
-		boolean validationResult = generalConfig
-				.getCreditCardNumberCommonValidators().stream().allMatch(validator -> validator.validate(number));
+		boolean validationResult = creditCardValidators
+				.getCommonValidators().stream().allMatch(validator -> validator.validate(number));
 
 		if (validationResult) {
-			validationResult = generalConfig.getCreditCardNumberVendorValidators().stream()
+			validationResult = creditCardValidators.getVendorSpecificValidators().stream()
 					.filter(validator -> validator.supports(vendorType))
 					.allMatch(validator -> validator.validate(number));
 			if (!validationResult) {
